@@ -1,0 +1,25 @@
+{
+  "resources": {
+    "webdriver": {
+      "darwin": {
+        "ia32": "http://chromedriver.storage.googleapis.com/2.10/chromedriver_mac32.zip",
+        "x64": "http://chromedriver.storage.googleapis.com/2.10/chromedriver_mac32.zip"
+      },
+      "linux": {
+        "ia32": "https://chromedriver.storage.googleapis.com/2.10/chromedriver_linux32.zip",
+        "x64": "https://chromedriver.storage.googleapis.com/2.10/chromedriver_linux64.zip"
+      },
+      "win32": {
+        "ia32": "http://chromedriver.storage.googleapis.com/2.10/chromedriver_win32.zip",
+        "x64": "http://chromedriver.storage.googleapis.com/2.10/chromedriver_win32.zip"
+      }
+    },
+    "extension": {
+      "all": "https://s3-us-west-2.amazonaws.com/testly-assets/extension.zip"
+    },
+    "update": {
+      "header": "etag",
+      "endpoint": "https://s3-us-west-2.amazonaws.com/testly-assets/extension.zip"
+    }
+  }
+}

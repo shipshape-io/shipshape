@@ -1,0 +1,36 @@
+{
+  "name": "shipshape",
+  "author": "shipshape.io",
+  "version": "0.1.10",
+  "description": "Daemon process and CLI for interacting with www.shipshape.io",
+  "homepage": "https://www.shipshape.io",
+  "main": "./shipshape.js",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/theak/shipshape.git"
+  },
+  "bin": {
+    "testly": "./testly.js",
+    "shipshape": "./shipshape.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "socket.io": "0.9.16",
+    "minimist": "1.1.0",
+    "http-proxy": "1.1.5",
+    "q": "1.0.1",
+    "unzip": "0.1.9",
+    "restler": "3.2.2",
+    "rimraf": "2.1",
+    "forever-win": "0.10.11",
+    "express": "4.8.4",
+    "prompt": "0.2.13",
+    "cli-table": "0.3.0"
+  },
+  "bugs": {
+    "url": "https://github.com/theak/shipshape/issues"
+  }
+}
