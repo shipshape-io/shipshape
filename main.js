@@ -15,6 +15,10 @@ var setup = require('./setup');
 
 function run(resources) {
   var verbose = process.argv[process.argv.length - 1] == '-v';
+
+  //Check for updates
+  var driver = exec('sh', [__dirname + '/update.sh']);
+
   var options = {
     //Options for HTTP proxy:
     resources: resources,
