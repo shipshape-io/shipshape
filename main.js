@@ -13,11 +13,16 @@ var socketProxy = require('./socketProxy');
 var httpProxy = require('./httpProxy');
 var setup = require('./setup');
 
+var platform = require('os').platform();
+
 function run(resources) {
   var verbose = process.argv[process.argv.length - 1] == '-v';
 
-  //Check for updates
-  var driver = exec('sh', [__dirname + '/update.sh']);
+  //Check for updates to shipshape
+  //Only do this non-windows platforms, since Windows handles this at the app level
+  try {
+    if (platform != 'win32') exec('sh', [__dirname + '/update.sh']);
+  } catch(e) { /* do nothing */ }
 
   var options = {
     //Options for HTTP proxy:
