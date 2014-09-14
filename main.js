@@ -36,6 +36,9 @@ function run(resources) {
         res.setHeader('Access-Control-Expose-Headers', 'X-Chrome-Extension-Path');
         res.setHeader('X-Chrome-Extension-Path', resources.extension);
       }
+      if (req.method == 'GET' && req.url.indexOf("/ping") != -1) {
+        io.sockets.emit('ping', {});
+      }
       res.oldWriteHead(statusCode, headers);
     }
 

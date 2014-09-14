@@ -30,10 +30,12 @@ function run(config) {
       list('tag', headers, ['id', 'name', 'test_count']);
   }
   if (command == 'run') {
-    var executionInfo = {source: 'C', email_behavior: 'N', variables: argv}
+    var executionInfo = {source: 'C', email_behavior: 'F', variables: argv}
+    if (argv.email && argv.email.substr(0, 2).toLowerCase() == 'no') executionInfo.email_behavior = 'N';
+
     if (argv.test_id) post('test/' + argv.test_id, headers, {executionInfo: executionInfo});
-    if (argv.tag) run_tag_name(argv.tag, headers, executionInfo);
-    if (argv.tag_id) run_tag(argv.tag_id, headers, executionInfo);
+    else if (argv.tag) run_tag_name(argv.tag, headers, executionInfo);
+    else if (argv.tag_id) run_tag(argv.tag_id, headers, executionInfo);
   }
   if (command == 'debug') {
     console.log(argv);
@@ -62,7 +64,15 @@ function post(resource, headers, data) {
   rest.post(backend + api_url + resource, {
     headers: headers,
     data: JSON.stringify(data)
-  });
+  }).on('complete', ping);
+}
+
+function ping() {
+  try {
+    rest.get('https://local.shipshape.io:9999/ping')
+  } catch(e) {
+    //do nothing
+  }
 }
 
 function list(resource, headers, columns) {
