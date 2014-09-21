@@ -21,12 +21,15 @@ function start(options, port) {
       }
 
       if (req.method == 'OPTIONS') statusCode = 200;
-      if (req.method == 'GET' && req.url.indexOf("/status") != -1) {
+      else if (req.method == 'GET' && req.url.indexOf("/status") > -1) {
         res.setHeader('Access-Control-Expose-Headers', 'X-Chrome-Extension-Path');
         res.setHeader('X-Chrome-Extension-Path', options.resources.extension);
       }
-      if (req.method == 'GET' && req.url.indexOf("/ping") != -1) {
+      else if (req.method == 'GET' && req.url.indexOf("/ping") > -1) {
         options.pingCallback();
+      }
+      else if (req.method == 'POST' && req.url.indexOf("/session") > -1) {
+        options.winCallback();
       }
       res.oldWriteHead(statusCode, headers);
     }

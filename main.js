@@ -40,6 +40,11 @@ function run(resources) {
   
   //Run the local HTTP Proxy
   options.pingCallback = function() { io.sockets.emit('ping', {}) };
+  options.winCallback = function() {
+    try {
+      if (platform == 'win32') exec(__dirname + '/chrome_helper.exe');
+    } catch(e) { /* do nothing */ }
+  }
   httpProxy.start(options, HTTP_PROXY_PORT);
   
   //Start the webdriver process
