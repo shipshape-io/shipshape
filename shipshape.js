@@ -34,6 +34,7 @@ function run(config) {
     if (argv.email && argv.email.substr(0, 2).toLowerCase() == 'no') executionInfo.email_behavior = 'N';
 
     if (argv.test_id) post('test/' + argv.test_id, headers, {executionInfo: executionInfo});
+    else if (argv.test_ids) post('tests/', headers, {executionInfo: executionInfo, test_ids: argv.test_ids.split(",")});
     else if (argv.tag) run_tag_name(argv.tag, headers, executionInfo);
     else if (argv.tag_id) run_tag(argv.tag_id, headers, executionInfo);
   }
