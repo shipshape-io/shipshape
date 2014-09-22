@@ -25,10 +25,10 @@ function start(options, port) {
         res.setHeader('Access-Control-Expose-Headers', 'X-Chrome-Extension-Path');
         res.setHeader('X-Chrome-Extension-Path', options.resources.extension);
       }
-      else if (req.method == 'GET' && req.url.indexOf("/ping") > -1) {
+      else if (req.method == 'GET' && endsWith(req.url, "/ping")) {
         options.pingCallback();
       }
-      else if (req.method == 'POST' && req.url.indexOf("/session") > -1) {
+      else if (req.method == 'POST' && endsWith(req.url, "/session")) {
         options.winCallback();
       }
       res.oldWriteHead(statusCode, headers);
@@ -39,5 +39,9 @@ function start(options, port) {
 
   server.listen(port);
 }
+
+function endsWith(string, suffix) {
+    return string.indexOf(suffix, string.length - suffix.length) !== -1;
+};
 
 exports.start = start;
