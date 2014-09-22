@@ -28,7 +28,7 @@ function start(options, port) {
       else if (req.method == 'GET' && req.url.indexOf("/ping") > -1) {
         options.pingCallback();
       }
-      else if (req.method == 'GET' && req.url.indexOf("/focus") > -1) {
+      else if (req.method == 'POST' && req.url.indexOf("/session") > -1) {
         options.winCallback();
       }
       res.oldWriteHead(statusCode, headers);
