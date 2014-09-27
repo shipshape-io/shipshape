@@ -11,7 +11,8 @@ var fs       = require('fs'),
     rest     = require('restler'),
     util     = require('util'),
     Table    = require('cli-table'),
-    updater  = require('./install/update');
+    updater  = require('./install/update'),
+    testly   = require('./testly');
 
 function run(config) {
   var headers = {
@@ -23,13 +24,13 @@ function run(config) {
   if (command == 'config') {
     getConfig(console.log, true);
   }
-  if (command == 'list' && resource) {
+  else if (command == 'list' && resource) {
     if (resource == 'test' || resource == 'tests')
       list('test', headers, ['name', 'creator_name', 'id']);
     else if (resource == 'tag' || resource == 'tags')
       list('tag', headers, ['id', 'name', 'test_count']);
   }
-  if (command == 'run') {
+  else if (command == 'run') {
     var executionInfo = {source: 'C', email_behavior: 'F', variables: argv}
     if (argv.email && argv.email.substr(0, 2).toLowerCase() == 'no') executionInfo.email_behavior = 'N';
 
@@ -38,9 +39,10 @@ function run(config) {
     else if (argv.tag) run_tag_name(argv.tag, headers, executionInfo);
     else if (argv.tag_id) run_tag(argv.tag_id, headers, executionInfo);
   }
-  if (command == 'debug') {
+  else if (command == 'debug') {
     console.log(argv);
   }
+  else console.log("Command not recognized. Please see https://shipshape.io for help.");
 }
 
 function run_tag(tag_id, headers, executionInfo) {
@@ -118,6 +120,10 @@ function printTable(headers, data) {
 }
 
 var argv = minimist(process.argv.slice(2));
-if (argv['_'].length < 1) return console.error("Invalid usage. Please specify a command to run (i.e., 'shipshape run --test_id=2')")
+if (argv['_'].length < 1) return console.error("Invalid usage. Please specify a command to run (i.e., 'shipshape run --test_id=2')");
 if (argv.local) backend = "http://localhost:8000";
-getConfig(run);
+
+if (argv['_'][0] == "start") testly.startDaemon();
+else if (argv['_'][0] == "stop") testly.stopDaemon();
+else if (argv['_'][0] == "status") testly.daemonStatus();
+else getConfig(run);

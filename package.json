@@ -1,13 +1,13 @@
 {
   "name": "shipshape",
   "author": "shipshape.io",
-  "version": "0.1.20",
+  "version": "0.1.21",
   "description": "Daemon process and CLI for interacting with www.shipshape.io",
   "homepage": "https://www.shipshape.io",
   "main": "./shipshape.js",
   "repository": {
     "type": "git",
-    "url": "git://github.com/theak/shipshape.git"
+    "url": "git://github.com/shipshape-io/shipshape.git"
   },
   "bin": {
     "testly": "./testly.js",
