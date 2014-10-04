@@ -34,7 +34,7 @@ function run(config) {
     var executionInfo = {source: 'C', email_behavior: 'F', variables: argv}
     if (argv.email && argv.email.substr(0, 2).toLowerCase() == 'no') executionInfo.email_behavior = 'N';
 
-    if (argv.test_id) post('test/' + argv.test_id, headers, {executionInfo: executionInfo});
+    if (argv.test_id) post('tests/', headers, {executionInfo: executionInfo, test_ids: [argv.test_id]});
     else if (argv.test_ids) post('tests/', headers, {executionInfo: executionInfo, test_ids: argv.test_ids.split(",")});
     else if (argv.tag) run_tag_name(argv.tag, headers, executionInfo);
     else if (argv.tag_id) run_tag(argv.tag_id, headers, executionInfo);
@@ -46,7 +46,7 @@ function run(config) {
 }
 
 function run_tag(tag_id, headers, executionInfo) {
-  post('tag/' + tag_id, headers, {executionInfo: executionInfo});
+  post('tests/', headers, {executionInfo: executionInfo, tag_id: tag_id});
 }
 
 function run_tag_name(tag_name, headers, executionInfo) {
@@ -54,7 +54,7 @@ function run_tag_name(tag_name, headers, executionInfo) {
     headers: headers
   }).on('complete', function(result) {
     if (result instanceof Error || result.length == 0) {
-      if (result.message) console.log('Error:', result.message);
+      if (result.message) console.error('Error:', result.message);
       else getConfig(run, true);
     } else if (result.objects) {
       if (result.objects.length == 0) console.log('No tag exists with the name: ' + tag_name);
@@ -63,11 +63,36 @@ function run_tag_name(tag_name, headers, executionInfo) {
   });
 }
 
+var attempts = 0;
+function poll(executionResource, headers) {
+  process.stdout.write('.');
+  rest.get(backend + executionResource, {
+    headers: headers
+  }).on('complete', function(result) {
+    if (result instanceof Error || result.length == 0) {
+      console.log('Error:', result.message);
+    } else if (
+          ((result.num_failures + result.num_passes) == result.num_results_expected)
+          || attempts++ > 100) {
+      console.log('\n' + result.num_passes + '/' + result.num_results_expected + ' tests passing');
+    } else {
+      setTimeout(function() {
+        poll(executionResource, headers);
+      }, 4000);
+    }
+  });
+}
+
 function post(resource, headers, data) {
   rest.post(backend + api_url + resource, {
     headers: headers,
     data: JSON.stringify(data)
-  }).on('complete', ping);
+  }).on('complete', function(result, response) {
+    if (result instanceof Error) return console.error('Error:', result.message)
+    ping();
+    process.stdout.write("Running..");
+    poll(JSON.parse(response.rawEncoded).resource_uri, headers);
+  });
 }
 
 function ping() {
