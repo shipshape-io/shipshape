@@ -121,16 +121,22 @@ function getConfig(callback, invalid) {
   fs.mkdir(path, function() {
     var configPath = path + "/config.json";
     var config = updater.read(configPath);
+    var configCallback = function(err, result) {
+      if (!err) {
+        updater.write(result, configPath);
+        callback(updater.read(configPath));
+      }
+    }
     if (invalid || !config.api_key || !config.email_address) {
-      console.log("Please visit " + backend + "/account to get your key")
-      prompt.get(['api_key', 'email_address'], function(err, result) {
-        if (!err) {
-          updater.write(result, configPath);
-          callback(updater.read(configPath));
-        } else {
-          console.log("");
-        }
-      });
+      if (argv && argv.api_key && argv.email) {
+        configCallback(null, {
+          api_key: argv.api_key,
+          email_address: argv.email
+        })
+      } else {
+        console.log("Please visit " + backend + "/account to get your key")
+        prompt.get(['api_key', 'email_address'], configCallback);
+      }
     } else callback(config);
   });
 }
