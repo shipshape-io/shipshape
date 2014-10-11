@@ -3,13 +3,15 @@
  * - Returns a Socket.io object
  */
 
-var https = require('https');
-var app = require('express')();
+function okHandler(request, response) {
+  response.writeHead(200);
+  response.end("ok");
+}
 
 function start(options, port) {
-  var httpsServer = https.createServer(options, app);
-  var io = require('socket.io').listen(httpsServer);
-  httpsServer.listen(port);
+  var app = require('https').createServer(options, okHandler);
+  var io = require('socket.io').listen(app, { log: false });
+  app.listen(port);
 
   io.on('connection', function(socket){
     socket.on('message', function(msg){

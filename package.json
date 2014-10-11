@@ -26,7 +26,6 @@
     "restler": "3.2.2",
     "rimraf": "2.1",
     "forever-win": "0.10.11",
-    "express": "4.8.4",
     "prompt": "0.2.13",
     "cli-table": "0.3.0"
   },
