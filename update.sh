@@ -1,2 +1,2 @@
 #!/bin/sh
-sudo npm update -g shipshape
+npm update -g shipshape
