@@ -1,7 +1,7 @@
 {
   "name": "shipshape",
   "author": "shipshape.io",
-  "version": "0.1.23",
+  "version": "0.1.24",
   "description": "Daemon process and CLI for interacting with www.shipshape.io",
   "homepage": "https://www.shipshape.io",
   "main": "./shipshape.js",
